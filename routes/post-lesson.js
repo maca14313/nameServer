@@ -1,14 +1,9 @@
+
 const express=require('express');
 const router=express.Router();
 const mysql=require('mysql')
 
-/* const db=mysql.createConnection({
-  host:"sql205.infinityfree.com",
-  user:"if0_34968317",
-  password:"xoFCZQEdrlvUTN",
-  database:"if0_34968317_test_try",
-  charset : 'utf8mb4',
-}) */
+
 
 const db=mysql.createConnection({
     host:"sql11.freemysqlhosting.net",
@@ -33,12 +28,9 @@ router.post('/registermember',async(req,res)=>{
      db.query(`SELECT * FROM members_data WHERE phone_number=${req.body.phoneNumber} `,(errors,resultes)=>{
 
           const matchPhoneNumber=resultes.map((re)=>{
-            //console.log(re.phone_number==req.body.phoneNumber)
             return re.phone_number;
           })
-     if (errors) {
-      //console.log(errors)
-     }
+     
          if (matchPhoneNumber!=req.body.phoneNumber) {
 
              /****************************************** */
@@ -78,12 +70,10 @@ router.post('/registermember',async(req,res)=>{
                       })
                     })
                   
-                  //console.log('ok')
           
           
           
                   }else{
-                      //console.log(err)
                   res.send(err)
           
                   }
@@ -119,9 +109,6 @@ router.post('/registermember',async(req,res)=>{
 
     
   
-   // GRANT ALL PRIVILEGES ON * . * TO 'root'@'localhost';
-   //ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '0925090339';
-   //ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '0925090339';
 
   
   })    
@@ -143,8 +130,8 @@ router.post('/registermember',async(req,res)=>{
           if(data){
            res.json('registerd')
           }else{
-           //console.log(error)
-          }
+            res.json('err')
+                    }
           
         })
 
@@ -162,11 +149,10 @@ router.post('/registermember',async(req,res)=>{
 
       db.query(`SELECT * FROM members_data `,(err,data)=>{
              if(data){
-              //console.log(data)
               res.json(data)
              }else{
-              //console.log(err)
-             }
+              res.json('err')
+                         }
       })
   })
 
@@ -174,28 +160,16 @@ router.post('/registermember',async(req,res)=>{
 
     db.query(`SELECT * FROM Phone_Number_List `,(err,data)=>{
            if(data){
-            //console.log(data)
             res.json(data)
            }else{
-            //console.log(err)
-           }
+            res.json('err')
+                     }
     })
 })
 
   /******************************************************************************************************* */
 
-  
-/*
-  router.get(`/fetchmember/:phone_number`,(req,res)=>{
-    db.query(`SELECT * FROM members_data WHERE phone_number=${req.params.phone_number}`,(err,data)=>{
-      if (data) {
-        res.json(data)
-        console.log(data.map((d)=>d.name))
-      } else {
-        
-      }
-    })
-  })*/
+
   router.get(`/fetchmember/:phone_number`,(req,res)=>{
   db.query(`SELECT * FROM members_data WHERE phone_number=${req.params.phone_number}`,(err,re)=>{
     res.json({
@@ -211,7 +185,6 @@ router.post('/registermember',async(req,res)=>{
                         phone_number:re.map((r)=>r.phone_number),
                         register_date:re.map((r)=>r.register_date),
     })
-        //console.log( re.map((r)=>r.name))
   })
 })
   /*****************************************************UPDATE************************************************** */
@@ -234,20 +207,21 @@ router.post('/registermember',async(req,res)=>{
   router.get(`/delete/:phone_number`,(req,res)=>{
     db.query(`DELETE FROM members_data WHERE phone_number = ${req.params.phone_number}`,(err,data)=>{
       if (data) {
-        //console.log(data + 'deleted')
         res.json('ok')
+      }else{
+        res.json('err')
       }
-      //console.log(err)
     })
   })
 
   router.get(`/deletephonenumber/:phone_number`,(req,res)=>{
     db.query(`DELETE FROM Phone_Number_List WHERE phone_number = ${req.params.phone_number}`,(err,data)=>{
       if (data) {
-        console.log(data + req.params.phone_number)
         res.json('ok')
+      }else{
+        res.json("error")
       }
-      console.log(err)
+      c
     })
   })
         /******************************************************************************************************* */
@@ -256,10 +230,9 @@ router.post('/registermember',async(req,res)=>{
           db.query(`SELECT * FROM members_data WHERE name LIKE '${req.params.searchText}%'`,(err,re)=>{
             if (re) {
               res.json(re)
-              console.log(re)
             }else{
-              console.log(err)
-            }
+              res.json('err')
+                        }
           })
         })
 
@@ -267,10 +240,9 @@ router.post('/registermember',async(req,res)=>{
           db.query(`SELECT * FROM members_data WHERE phone_number = ${req.params.searchText}`,(err,re)=>{
             if (re) {
               res.json(re)
-              //console.log(re)
             }else{
-              //console.log(err)
-            }
+              res.json('err')
+                        }
           })
         })
 
@@ -279,9 +251,9 @@ router.post('/registermember',async(req,res)=>{
           db.query(`SELECT * FROM Phone_Number_List WHERE phone_number = ${req.params.searchText}`,(err,re)=>{
             if (re) {
               res.json(re)
-              console.log(re)
             }else{
-              console.log(err)
+              res.json('err')
+              
             }
           })
         })
