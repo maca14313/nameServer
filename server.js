@@ -19,12 +19,15 @@ app.use(express.json());
 
 
 const db=mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"0925090339",
-    database:"test_try",
-    charset : 'utf8mb4',
-  }) 
+  host:"sql11.freemysqlhosting.net",
+  user:"sql11644520",
+  password:"JRgbfIDZQN",
+  database:"sql11644520",
+  /*connectionLimit: 50,
+    queueLimit: 0,
+    waitForConnection: true*/
+  //charset : 'utf8mb4_unicode_ci',
+})
 
 
   var del = db._protocol._delegateError;

@@ -2,12 +2,23 @@ const express=require('express');
 const router=express.Router();
 const mysql=require('mysql')
 
+/* const db=mysql.createConnection({
+  host:"sql205.infinityfree.com",
+  user:"if0_34968317",
+  password:"xoFCZQEdrlvUTN",
+  database:"if0_34968317_test_try",
+  charset : 'utf8mb4',
+}) */
+
 const db=mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"0925090339",
-    database:"test_try",
-    charset : 'utf8mb4',
+    host:"sql11.freemysqlhosting.net",
+    user:"sql11644520",
+    password:"JRgbfIDZQN",
+    database:"sql11644520",
+    /*connectionLimit: 50,
+      queueLimit: 0,
+      waitForConnection: true*/
+    //charset : 'utf8mb4_unicode_ci',
   })
 
 
@@ -17,7 +28,6 @@ router.get('/',(req,res)=>{
 
               //registermember
 router.post('/registermember',async(req,res)=>{
-   // INSERT INTO users (first_name, last_name, email, password, location, dept, is_admin, register_date) values ('Brad', 'Traversy', 'brad@gmail.com', '123456','Massachusetts', 'development', 1, now());
      
 
      db.query(`SELECT * FROM members_data WHERE phone_number=${req.body.phoneNumber} `,(errors,resultes)=>{
@@ -85,7 +95,7 @@ router.post('/registermember',async(req,res)=>{
                   response:'Your phone number not on the list',
                 })
     
-              }
+              }  
         } )
     
             /*******************************************/
