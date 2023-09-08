@@ -189,11 +189,11 @@ router.post('/registermember',async(req,res)=>{
 })
   /*****************************************************UPDATE************************************************** */
 
-     router.put(`/updatemember`,(req,res)=>{
+      router.put(`/updatemember`,(req,res)=>{
       db.query(`UPDATE members_data 
       
-      SET name=?,father_name=?,grand_father_name=?,email=?,gender=?,campus=?,dept=?,city=?,phone_number=?
-      WHERE phone_number=${req.body.phoneNumber} `,[req.body.name,req.body.fatherName,req.body.grandFatherName,req.body.email,req.body.gender,req.body.campus,req.body.department,req.body.city,req.body.phoneNumber],(err,data)=>{
+      SET name=?,father_name=?,grand_father_name=?,email=?,gender=?,campus=?,dept=?,city=?,phone_number=?,batch=?
+      WHERE phone_number=${req.body.phoneNumber} `,[req.body.name,req.body.fatherName,req.body.grandFatherName,req.body.email,req.body.gender,req.body.campus,req.body.department,req.body.city,req.body.phoneNumber,req.body.batch],(err,data)=>{
   if (data) {
     
     res.json('You have successfully updated your profile')
