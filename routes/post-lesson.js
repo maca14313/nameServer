@@ -177,8 +177,8 @@ router.post('/registermember',async(req,res)=>{
   /* addphonenumber addphonenumber addphonenumber addphonenumber addphonenumber addphonenumber*/
       
   router.post('/addphonenumber',async(req,res)=>{
-    const q="INSERT INTO Phone_Number_List (`phone_number`) VALUES (?)"
-    const v=[req.body.phoneNumber];
+    const q="INSERT INTO Phone_Number_List (`phone_number`,`name`) VALUES (?)"
+    const v=[req.body.phoneNumber,req.body.name];
     db.query(`SELECT * FROM Phone_Number_List WHERE phone_number =${req.body.phoneNumber} `,(err,result)=>{
             const existPhoneNumber=result?.map((re)=>{
         return re.phone_number
