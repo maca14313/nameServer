@@ -44,7 +44,7 @@ router.post('/registermember',async(req,res)=>{
              const memberNumber=req.body.phoneNumber
              const memberName=req.body.name
              const g=memberName.length-2
-             const memberId= memberName.slice(0,2) + memberNumber.slice(6)
+             const memberId= memberName.slice(0,2) + memberNumber.slice(6) + Math.floor(Math.random() * 100);
              const q="INSERT INTO members_data (`name`,`father_name`,`grand_father_name`,`email`,`gender`,`campus`,`dept`,`city`,`phone_number`,`register_date`,`personal_id`,`batch`) VALUES (?)"
              const values= [req.body.name,req.body.fatherName,req.body.grandFatherName,req.body.email,req.body.gender,req.body.campus,req.body.department,req.body.city,req.body.phoneNumber,new Date(),memberId,req.body.batch];
                   
@@ -281,9 +281,9 @@ router.post('/registermember',async(req,res)=>{
       if (data) {
         res.json('ok')
       }else{
-        res.json("error")
+        res.json(err)
       }
-      c
+      
     })
   })
         /******************************************************************************************************* */
