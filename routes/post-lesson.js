@@ -113,7 +113,67 @@ router.post('/registermember',async(req,res)=>{
 
   
   })    
+  /************************** Log In  *********************************** */
+
+  router.post('/loginmember',async(req,res)=>{
+     
+    //console.log(req.body.id)
+
+    db.query(`SELECT * FROM members_data WHERE phone_number=${req.body.phoneNumber} `,(errors,resultes)=>{
+
+      if (resultes) {
+
+        const matchPhoneNumber=resultes.map((re)=>{
+        return re.personal_id;
+         }) 
+         if (matchPhoneNumber[0]==req.body.id) {
+          res.json({
+            id:resultes.map((r)=>r.personal_id),
+            name:resultes.map((r)=>r.name),
+            father_name:resultes.map((r)=>r.father_name),
+            grand_father_name:resultes.map((r)=>r.grand_father_name),
+            email:resultes.map((r)=>r.email),
+            gender:resultes.map((r)=>r.gender),
+            batch:resultes.map((r)=>r.batch),
+            campus:resultes.map((r)=>r.campus),
+            dept:resultes.map((r)=>r.dept),
+            city:resultes.map((r)=>r.city),
+            phone_number:resultes.map((r)=>r.phone_number),
+            register_date:resultes.map((r)=>r.register_date),
+
+            response:'',
+            registerd:'Loged In'
+          })
+         } else {
+          res.json({
+            response:'incorrect intery',
+          })
+         }
+
+      } else {
+        res.json({
+          response:'incorrect intery',
+        })
+      }
+    
+    
+       
+
+    })
+
+
+
+
+
+
   
+
+
+   
+ 
+
+ 
+ })    
   /* addphonenumber addphonenumber addphonenumber addphonenumber addphonenumber addphonenumber*/
       
   router.post('/addphonenumber',async(req,res)=>{
