@@ -51,6 +51,10 @@ router.post('/registermember',async(req,res)=>{
                 db.query(q,[values],(err,data)=>{
                   if(data){
                     db.query(`SELECT * FROM members_data WHERE phone_number=${req.body.phoneNumber}`,(e,re)=>{
+                      
+                      
+                      
+                      
                       console.log(re.map((r)=>r.personal_id))
                       res.json({
                         id:re.map((r)=>r.personal_id),
@@ -71,8 +75,7 @@ router.post('/registermember',async(req,res)=>{
                       })
                     })
                   
-          
-          
+                    
           
                   }else{
                   res.send(err)
@@ -113,6 +116,84 @@ router.post('/registermember',async(req,res)=>{
 
   
   })    
+/****************************************************************************** */
+
+router.post('/registermemberreg',async(req,res)=>{
+     
+
+  db.query(`SELECT * FROM members_data WHERE phone_number=${req.body.phoneNumber} `,(errors,resultes)=>{
+     
+       const matchPhoneNumber=resultes.map((re)=>{
+         return re.phone_number;
+       })
+      if (matchPhoneNumber==req.body.phoneNumber) {
+          /****************************************** */
+          db.query(`SELECT * FROM Phone_Number_List WHERE phone_number=${req.body.phoneNumber}`,(error,result)=>{
+           const phoneNumberExist=result.map((re)=>{
+             return re.phone_number
+           })
+ 
+           if (phoneNumberExist==req.body.phoneNumber) {
+          /****************************************** */
+          const q="INSERT INTO Phone_Number_List (`reg`) VALUES (?)"
+          const v=['yes'];
+          db.query(`SELECT * FROM Phone_Number_List WHERE phone_number =${req.body.phoneNumber} `,(err,result)=>{
+                  if (result) {
+                   
+                      db.query(`UPDATE Phone_Number_List 
+                      
+                      SET reg=?
+                      WHERE phone_number=${req.body.phoneNumber} `,['yes'],(err,data)=>{
+                  if (data) {
+                    console.log(data + 'pppppppppppppp')
+                    res.json('You have successfully updated your profile')
+                
+                  } else {
+                    console.log(err + 'errrrrrrrrrrr')
+                    res.json('try again')
+                  }
+                      })
+                   
+
+                  
+                  } else {
+                    res.json(err)
+                  }
+           
+          })
+ 
+           }  
+     } )
+ 
+         /*******************************************/
+      } else {
+       res.json({
+         id:'',
+         response:'Try another phone number',
+       })
+
+      }
+
+  })
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+}) 
+
+
+  /************************************************************************ */
+  
+
   /************************** Log In  *********************************** */
 
   router.post('/loginmember',async(req,res)=>{
@@ -174,8 +255,10 @@ router.post('/registermember',async(req,res)=>{
 
  
  })    
-  /* addphonenumber addphonenumber addphonenumber addphonenumber addphonenumber addphonenumber*/
-      
+  
+
+    /* addphonenumber addphonenumber addphonenumber addphonenumber addphonenumber addphonenumber*/
+
   router.post('/addphonenumber',async(req,res)=>{
     const q="INSERT INTO Phone_Number_List (`phone_number`,`name`) VALUES (?)"
     const v=[req.body.phoneNumber,req.body.name];
