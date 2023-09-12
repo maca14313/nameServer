@@ -145,11 +145,9 @@ router.post('/registermemberreg',async(req,res)=>{
                       SET reg=?
                       WHERE phone_number=${req.body.phoneNumber} `,['yes'],(err,data)=>{
                   if (data) {
-                    console.log(data + 'pppppppppppppp')
                     res.json('You have successfully updated your profile')
                 
                   } else {
-                    console.log(err + 'errrrrrrrrrrr')
                     res.json('try again')
                   }
                       })
@@ -299,16 +297,28 @@ router.post('/registermemberreg',async(req,res)=>{
                          }
       })
   })
+/******************************************************************************************************* */
 
   router.get('/listofphonenumber',async(req,res)=>{
 
-    db.query(`SELECT * FROM Phone_Number_List `,(err,data)=>{
+    db.query(`SELECT * FROM Phone_Number_List WHERE reg != 'yes' `,(err,data)=>{
            if(data){
             res.json(data)
            }else{
             res.json('err')
                      }
     })
+})
+
+router.get('/listofphonenumber/reg',async(req,res)=>{
+
+  db.query(`SELECT * FROM Phone_Number_List WHERE reg ='yes' `,(err,data)=>{
+         if(data){
+          res.json(data)
+         }else{
+          res.json('err')
+                   }
+  })
 })
 
   /******************************************************************************************************* */
