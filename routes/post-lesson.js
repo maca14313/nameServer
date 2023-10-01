@@ -4,7 +4,7 @@ const router=express.Router();
 const mysql=require('mysql')
 
 
-/*
+
 const db=mysql.createConnection({
     host:"sql11.freemysqlhosting.net",
     user:"sql11645919",
@@ -14,15 +14,9 @@ const db=mysql.createConnection({
       queueLimit: 0,
       waitForConnection: true
     charset : 'utf8mb4_unicode_ci',*/
-  //}) 
-
-  const db=mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"0925090339",
-    database:"sql11645919",
-    charset : 'utf8mb4',
   }) 
+
+  
 
 router.get('/',(req,res)=>{
     res.send("hello word")
