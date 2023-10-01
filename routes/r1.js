@@ -4,25 +4,18 @@ const router=express.Router();
 const mysql=require('mysql')
 
 
-/*
+
 const db=mysql.createConnection({
-    host:"sql11.freemysqlhosting.net",
-    user:"sql11645919",
-    password:"JcGHJnx5Bg",
-    database:"sql11645919",
+  host:"sql11.freemysqlhosting.net",
+  user:"sql11645919",
+  password:"JcGHJnx5Bg",
+  database:"sql11645919",
     /*connectionLimit: 50,
       queueLimit: 0,
-      waitForConnection: true
-    charset : 'utf8mb4_unicode_ci',*/
-  //}) 
+      waitForConnection: true*/
+    //charset : 'utf8mb4_unicode_ci',
+  })
 
-  const db=mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"0925090339",
-    database:"sql11645919",
-    charset : 'utf8mb4',
-  }) 
 
 router.get('/',(req,res)=>{
     res.send("hello word")
@@ -51,7 +44,7 @@ router.post('/registermember',async(req,res)=>{
              const memberNumber=req.body.phoneNumber
              const memberName=req.body.name
              const g=memberName.length-2
-             const memberId= memberName.slice(0,2) + memberNumber.slice(8) + Math.floor(Math.random() * 1000);
+             const memberId= memberName.slice(0,2) + memberNumber.slice(8) + Math.floor(Math.random() * 10000);
              const q="INSERT INTO members_data (`name`,`father_name`,`grand_father_name`,`email`,`gender`,`campus`,`dept`,`city`,`phone_number`,`register_date`,`personal_id`,`batch`) VALUES (?)"
              const values= [req.body.name,req.body.fatherName,req.body.grandFatherName,req.body.email,req.body.gender,req.body.campus,req.body.department,req.body.city,req.body.phoneNumber,new Date(),memberId,req.body.batch];
                   
@@ -324,7 +317,6 @@ router.get('/listofphonenumber/reg',async(req,res)=>{
           res.json(data)
          }else{
           res.json('err')
-          console.log(err)
                    }
   })
 })
@@ -421,263 +413,5 @@ router.get('/listofphonenumber/reg',async(req,res)=>{
           })
         })
         /******************************************************************************************************* */
-       
-        router.post('/ppayment',async(req,res)=>{
 
-          try {
-            
-          
-          db.query(`SELECT * FROM P_Payment WHERE personal_id='${req.body.id}' `,(errors,resultes)=>{
-
-            if (errors) {
-              res.json({
-                response:"network error",
-               })
-            }
-            const resultes_id = resultes.filter((re)=>{
-              return re.personal_id==req.body.id
-              
-          })
-          console.log('we',resultes_id.map((i)=>i.personal_id)[0]==req.body.id)
-
-            if (resultes_id.map((i)=>i.personal_id)==req.body.id || resultes_id.map((i)=>i.personal_id)[0]==req.body.id) {
-              console.log('match id')
-
-              const resultes_trn=resultes.filter((re)=>re.trn==req.body.trn)
-              //console.log(resultes_trn)
-              if (resultes_trn.map((i)=>i.trn)!=req.body.trn && resultes_trn.map((i)=>i.trn)[0]!=req.body.trn) {
-                console.log('true')
-                const q="INSERT INTO P_Payment (`trn`,`amount`,`bank_name`,`personal_id`,`date_of_entry`) VALUES (?)"
-              const values= [req.body.trn,req.body.amount,req.body.name_of_bank,req.body.id,new Date()];
-              db.query(q,[values],(err,data)=>{
-                 if (data) {
-                  console.log('new trn')
-                    
-                    res.json({
-                      registerd:'delivered',
-                    })
-                 } else {
-                   res.json({
-                    response:'not delivered',
-                   })
-                 }
-               
-              })
-              }else{
-                console.log('match trn')
-                res.json({
-                  response:'incorrect trn',
-                })
-
-              }
-            } else if(resultes_id.map((i)=>i.personal_id)[0]!=req.body.id) {
-              console.log(resultes_id.map((i)=>i.personal_id)[0]==req.body.id)
-              console.log(resultes_id.map((i)=>i.personal_id)==req.body.id)
-
-              const q="INSERT INTO P_Payment (`trn`,`amount`,`bank_name`,`personal_id`,`date_of_entry`) VALUES (?)"
-              const values= [req.body.trn,req.body.amount,req.body.name_of_bank,req.body.id,new Date()];
-              db.query(q,[values],(err,data)=>{
-                 if (data) {
-                  console.log('new id')
-                    res.json({
-                      registerd:'delivered',
-                    })
-                 } else {
-                   res.json({
-                    response:'not delivered',
-
-                   })
-                 }
-               
-              })
-
-            }else{
-              res.json({
-                response:'not delivered',
-
-               })
-            }
-            
-               
-        
-          })
-        
-        
-        } catch (error) {
-            res.json(error)
-        }
-        
-        
-        
-        
-        
-        
-         
-        
-        
-        
-        }) 
-        
- /******************************************************************************************************* */
- router.post('/adminclientreceipt',async(req,res)=>{
-  db.query(`SELECT * FROM members_data  WHERE phone_number='${req.body.phone}' `,(err,data)=>{
-         if(data){
-          const personal_id=data.map((m)=>m.personal_id)
-          res.json(personal_id)
-         }else{
-          res.json('err')
-                     }
-  }) 
-})
-
-/******************************************************************************************************* */
-         router.get('/ppaymentapproval',async(req,res)=>{
-
-         try {
-          db.query(`SELECT * FROM P_Payment WHERE approved='no' `,(errors,resultes)=>{
-            if (resultes) {
-              console.log(resultes)
-               res.json(resultes)          
-            } else {
-              res.json(errors)
-            }
-         })
-         } catch (error) {
-          res.json(error)
-         }
-
-         })
-
-/******************************************************************************************************* */
-/*****************************************************UPDATE************************************************** */
-router.put(`/acceptaprroval/:id/:personalid`,(req,res)=>{
- try {
-
-  db.query(`SELECT * FROM members_data WHERE personal_id='${req.params.personalid}'`,(errors,re)=>{
-    const total_amount=JSON.parse(re?.map((r)=>r.total_amount_payed))
-    const newAmount=JSON.parse(req.body.newAmount)
-    const newTotalAmount=total_amount+newAmount
-    const shares=newTotalAmount/500
-    console.log(shares)
-    if (re) {
-      
-      db.query(`UPDATE members_data 
-      
-      SET total_amount_payed=?,amount_of_shares=?
-      WHERE personal_id='${req.params.personalid}' `,[newTotalAmount,shares],(error,result)=>{
-         if (result) {
-          
-          db.query(`UPDATE P_Payment 
-  
-          SET approved=?
-          WHERE id=${req.params.id} `,['yes'],(err,data)=>{
-        if (data) {
-        
-        res.json('You have successfully updated your profile')
-        
-        } else {
-        res.json('try again')
-        }
-          }) 
-
-         } else {
-          res.json(error)
-         }
-
-    }) 
-
-    } else {
-      res.json(errors)
-    }
-   
-  })
-
-
- /* db.query(`UPDATE P_Payment 
-  
-  SET approved=?
-  WHERE id=${req.params.id} `,['yes'],(err,data)=>{
-if (data) {
-
-res.json('You have successfully updated your profile')
-
-} else {
-res.json('try again')
-}
-  }) */
- } catch (error) {
-  res.json(error)
- }
- })
-/******************************************************************************************************* */
-
-  /******************************************************************************************************* */
-
-
-  router.get(`/fetchmemberbyid/:id`,(req,res)=>{
-    try {
-      db.query(`SELECT * FROM members_data WHERE personal_id='${req.params.id}'`,(err,re)=>{
-        console.log('amount_of_shares',re?.map((r)=>r.amount_of_shares))
-        res.json({
-          id:re?.map((r)=>r.personal_id),
-          name:re?.map((r)=>r.name),
-          father_name:re?.map((r)=>r.father_name),
-          grand_father_name:re?.map((r)=>r.grand_father_name),
-          email:re?.map((r)=>r.email),
-          gender:re?.map((r)=>r.gender),
-          batch:re?.map((r)=>r.batch),
-          campus:re?.map((r)=>r.campus),
-          dept:re?.map((r)=>r.dept),
-          city:re?.map((r)=>r.city),
-          phone_number:re?.map((r)=>r.phone_number),
-          register_date:re?.map((r)=>r.register_date),
-          total_amount_payed:re?.map((r)=>r.total_amount_payed),
-          amount_of_shares:re?.map((r)=>r.amount_of_shares),
-  })
-      })
-    } catch (error) {
-      res.json(error)
-    }
-  })
-    /*****************************************************UPDATE************************************************** */
-/******************************************************************************************************* */
-
-
-router.get(`/fetchmemberpaymentbyid/:id`,(req,res)=>{
-  try {
-    db.query(`SELECT * FROM P_Payment WHERE personal_id='${req.params.id}' AND approved='no'`,(err,re)=>{
-      console.log(re)
-      if (re) {
-        res.json(re)
-      } else {
-        res.json(err)
-      }
-      
-    })
-  } catch (error) {
-    res.json(error)
-  }
- 
-})
-  /*****************************************************UPDATE************************************************** */
-
-  /******************************************************************************************************* */
-
-
-router.get(`/fetchmemberpaymentbyidyes/:id`,(req,res)=>{
-  try {
-    db.query(`SELECT * FROM P_Payment WHERE personal_id='${req.params.id}' AND approved='yes'`,(err,re)=>{
-      if (re) {
-        res.json(re)
-      } else {
-        res.json(err)
-      }
-      
-    })
-  } catch (error) {
-    res.json(error)
-  }
- 
-})
-  /*****************************************************UPDATE************************************************** */
 module.exports=router
