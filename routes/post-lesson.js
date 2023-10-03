@@ -551,7 +551,7 @@ router.put(`/acceptaprroval/:id/:personalid`,(req,res)=>{
     const total_amount=JSON.parse(re?.map((r)=>r.total_amount_payed))
     const newAmount=JSON.parse(req.body.newAmount)
     const newTotalAmount=total_amount+newAmount
-    const shares=newTotalAmount/500
+    const shares=Math.floor(newTotalAmount/500)
     console.log(shares)
     if (re) {
       
