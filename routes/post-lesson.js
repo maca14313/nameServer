@@ -10,13 +10,16 @@ const db=mysql.createConnection({
     user:"sql11645919",
     password:"JcGHJnx5Bg",
     database:"sql11645919",
-    /*connectionLimit: 50,
-      queueLimit: 0,
-      waitForConnection: true
-    charset : 'utf8mb4_unicode_ci',*/
+   
   }) 
 
-  
+ /* const db=mysql.createConnection({
+    host:"localhost",
+    user:"root",
+    password:"0925090339",
+    database:"sql11645919",
+    charset : 'utf8mb4',
+  }) */
 
 router.get('/',(req,res)=>{
     res.send("hello word")
@@ -587,24 +590,83 @@ router.put(`/acceptaprroval/:id/:personalid`,(req,res)=>{
   })
 
 
- /* db.query(`UPDATE P_Payment 
-  
-  SET approved=?
-  WHERE id=${req.params.id} `,['yes'],(err,data)=>{
-if (data) {
-
-res.json('You have successfully updated your profile')
-
-} else {
-res.json('try again')
-}
-  }) */
+ 
  } catch (error) {
   res.json(error)
  }
  })
 /******************************************************************************************************* */
+/*****************************************************UPDATE************************************************** */
+router.put(`/deleteaprroval/:id/:personalid`,(req,res)=>{
+  try {
+ 
+     const newTotalAmount=req.body.newAmount
+     const shares=req.body.share
+     console.log(shares)
+       
+       db.query(`UPDATE members_data 
+       
+       SET total_amount_payed=?,amount_of_shares=?
+       WHERE personal_id='${req.params.personalid}' `,[newTotalAmount,shares],(error,result)=>{
+          if (result) {
+            db.query(`DELETE FROM P_Payment WHERE id=${req.params.id}`,(err,data)=>{
 
+        
+         if (data) {
+         res.json('You have successfully deleted this receipt')
+         
+         } else {
+         res.json('try again')
+         }
+           }) 
+ 
+          } else {
+           res.json(error)
+          }
+ 
+     }) 
+ 
+    
+    
+ 
+ 
+  
+  } catch (error) {
+   res.json(error)
+  }
+  })
+ /******************************************************************************************************* */
+
+ router.put(`/deleteunapproved/:id`,(req,res)=>{
+  try {
+ 
+            db.query(`DELETE FROM P_Payment WHERE id=${req.params.id}`,(err,data)=>{
+
+        
+         if (data) {
+          console.log('You have successfully deleted this pending receipt')
+         res.json('You have successfully deleted this receipt')
+         
+         } else {
+         res.json('try again')
+         }
+           }) 
+ 
+        
+ 
+     
+ 
+    
+    
+ 
+ 
+  
+  } catch (error) {
+   res.json(error)
+  }
+  })
+ /******************************************************************************************************* */
+ 
   /******************************************************************************************************* */
 
 
