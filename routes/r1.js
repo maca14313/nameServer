@@ -7,9 +7,9 @@ const mysql=require('mysql')
 
 const db=mysql.createConnection({
     host:"sql11.freemysqlhosting.net",
-    user:"sql11645919",
-    password:"JcGHJnx5Bg",
-    database:"sql11645919",
+   user:"sql11665997",
+   password:"DryhiQVTsY",
+   database:"sql11665997",
    
   }) 
 
