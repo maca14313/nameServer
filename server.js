@@ -39,7 +39,7 @@ db._protocol._delegateError = function(err, sequence){
 };
 
 app.get("/",(req,res)=>{
-  res.send('welcom')
+  res.send('welcom2')
 })
 
 const postLesson= require('./routes/post-lesson')
